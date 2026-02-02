@@ -10,7 +10,7 @@ namespace eShopPorted.Services
     {
         private CatalogDBContext db;
 
-        public CatalogService(CatalogDBContext db)            
+        public CatalogService(CatalogDBContext db)
         {
             this.db = db;
         }

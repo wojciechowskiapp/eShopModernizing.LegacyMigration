@@ -1,6 +1,8 @@
-﻿using eShopPorted.Services;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using eShopPorted.Services;
+using Microsoft.Extensions.Logging;
+using eShopPorted.Application.Common.Interfaces;
 
 namespace eShopPorted.Controllers
 {
@@ -8,30 +10,26 @@ namespace eShopPorted.Controllers
     [Route("api/[controller]")]
     public class BrandsController : Controller
     {
+        private readonly IMediator _mediator;
+        private readonly ILogger<BrandsController> _logger;
         private readonly ICatalogService _service;
 
-        public BrandsController(ICatalogService service)
+        public BrandsController(ICatalogService service, ILogger<BrandsController> logger, IMediator mediator)
         {
             _service = service;
+            _logger = logger; _mediator = mediator;
         }
-
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            var brands = _service.GetCatalogBrands();
-            return Ok(brands);
+            var result = await _mediator.Send(new BrandsGetListQuery());
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
-
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var brandToDelete = _service.GetCatalogBrands().FirstOrDefault(x => x.Id == id);
-            if (brandToDelete == null)
-            {
-                return NotFound();
-            }
-
-            // demo only - don't actually delete
-            return Ok();
+            var result = await _mediator.Send(new BrandsDeleteCommand { Id = id });
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Catalog manager (MVC)</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="/dist/css/css.css" asp-append-version="true" />
+    <script src="/dist/js/modernizr.js" asp-append-version="true"></script>
 </head>
 <body>
     <header class="navbar navbar-light navbar-static-top">
@@ -40,8 +40,8 @@
         </div>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="/dist/js/jquery.js" asp-append-version="true"></script>
+    <script src="/dist/js/bootstrap.js" asp-append-version="true"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
