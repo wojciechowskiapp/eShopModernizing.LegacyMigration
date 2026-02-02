@@ -1,8 +1,10 @@
-﻿using eShopLegacy.Utilities;
-using eShopPorted.Services;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using eShopLegacy.Utilities;
+using eShopPorted.Services;
+using Microsoft.Extensions.Logging;
+using eShopPorted.Application.Common.Interfaces;
 
 namespace eShopPorted.Controllers
 {
@@ -10,28 +12,21 @@ namespace eShopPorted.Controllers
     [Route("api/[controller]")]
     public class FilesController : Controller
     {
+        private readonly IMediator _mediator;
+        private readonly ILogger<FilesController> _logger;
         private readonly ICatalogService _service;
 
-        public FilesController(ICatalogService service)
+        public FilesController(ICatalogService service, ILogger<FilesController> logger, IMediator mediator)
         {
             _service = service;
+            _logger = logger; _mediator = mediator;
         }
-
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            var brands = _service.GetCatalogBrands()
-                .Select(b => new BrandDTO
-                {
-                    Id = b.Id,
-                    Brand = b.Brand
-                }).ToList();
-            var serializer = new Serializing();
-
-            var data = serializer.SerializeBinary(brands);
-
-            return Ok(data);
+            var result = await _mediator.Send(new FilesGetListQuery());
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
-
         [Serializable]
         public class BrandDTO
         {

@@ -1,52 +1,50 @@
-﻿using eShopLegacy.Utilities;
-using eShopLegacyMVC.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Remoting.Messaging;
 using System.Web.Http;
+using eShopLegacy.Utilities;
+using eShopLegacyMVC.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using eShopLegacyMVC.Application.Common.Interfaces;
 
 namespace eShopLegacyMVC.Controllers.WebApi
 {
-    public class BrandsController : ApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BrandsController : ControllerBase
     {
+        private readonly IMediator _mediator;
+        private readonly ILogger<BrandsController> _logger;
         private ICatalogService _service;
-
-        public BrandsController(ICatalogService service)
+        public BrandsController(ICatalogService service, ILogger<BrandsController> logger, IMediator mediator)
         {
             _service = service;
+            _logger = logger;
+            _mediator = mediator;
         }
-
+        [HttpGet]
         // GET api/<controller>
-        public IEnumerable<Models.CatalogBrand> Get()
+        public async Task<IActionResult> Get()
         {
-            var brands = _service.GetCatalogBrands();
-            return brands;
+            var result = await _mediator.Send(new BrandsGetFormQuery());
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
-
+        [HttpGet("{id:int}")]
         // GET api/<controller>/5
-        public IHttpActionResult Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var brands = _service.GetCatalogBrands();
-            var brand = brands.FirstOrDefault(x => x.Id == id);
-            if (brand == null) return NotFound();
-
-            return Ok(brand);
+            var result = await _mediator.Send(new BrandsGetFormQuery { Id = id });
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
-
         [HttpDelete]
         // DELETE api/<controller>/5
-        public IHttpActionResult Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var brandToDelete = _service.GetCatalogBrands().FirstOrDefault(x => x.Id == id);
-            if (brandToDelete == null)
-            {
-                return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NotFound));
-            }
-
-            // demo only - don't actually delete
-            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK));
+            var result = await _mediator.Send(new BrandsDeleteCommand { Id = id });
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
     }
 }
