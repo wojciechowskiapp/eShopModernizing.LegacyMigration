@@ -32,7 +32,7 @@ public sealed class BrandsGetFormHandler : IRequestHandler<BrandsGetFormQuery, R
         var brand = brands.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (brand == null)
         {
-        return Result.Failure("Not found");
+            return Result.Failure("Not found");
         }
         return Result.Success(brand);
     }

@@ -8,14 +8,14 @@ namespace eShopLegacyMVC.Models
     {
         public CatalogDBContext(DbContextOptions<CatalogDBContext> options) : base(options)
         {
-// TODO: EF6 had lazy loading enabled by default
-        // To enable in EF Core, add to Program.cs:
-        // services.AddDbContext<CatalogDBContext>(options =>
-        //     options.UseLazyLoadingProxies()
-        //            .UseSqlServer(connectionString));
-        // Requires: Microsoft.EntityFrameworkCore.Proxies package
-        // Note: Navigation properties must be virtual
-                }
+            // TODO: EF6 had lazy loading enabled by default
+            // To enable in EF Core, add to Program.cs:
+            // services.AddDbContext<CatalogDBContext>(options =>
+            //     options.UseLazyLoadingProxies()
+            //            .UseSqlServer(connectionString));
+            // Requires: Microsoft.EntityFrameworkCore.Proxies package
+            // Note: Navigation properties must be virtual
+        }
 
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }

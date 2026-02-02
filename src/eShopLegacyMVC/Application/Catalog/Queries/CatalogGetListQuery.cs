@@ -42,7 +42,7 @@ public sealed class CatalogGetListHandler : IRequestHandler<CatalogGetListQuery,
         request.PageIndex, request.PageSize, totalItems, itemsOnPage);
         (foreach (var catalogItem in paginatedItems.Data)
         {
-        AddUriPlaceHolder(catalogItem);
+            AddUriPlaceHolder(catalogItem);
         });
         return Result.Success(paginatedItems);
     }

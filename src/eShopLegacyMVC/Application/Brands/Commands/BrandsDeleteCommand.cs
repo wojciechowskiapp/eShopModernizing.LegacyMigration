@@ -31,7 +31,7 @@ public sealed class BrandsDeleteHandler : IRequestHandler<BrandsDeleteCommand, R
         var brandToDelete = _context.CatalogBrands.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (brandToDelete == null)
         {
-        return Result.Success(ResponseMessage(new HttpResponseMessage(HttpStatusCode.NotFound)));
+            return Result.Success(ResponseMessage(new HttpResponseMessage(HttpStatusCode.NotFound)));
         }
         return Result.Success(ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK)));
     }

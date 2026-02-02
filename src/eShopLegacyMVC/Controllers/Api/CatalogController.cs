@@ -7,15 +7,18 @@ namespace eShopLegacyMVC.Controllers.Api
     [Route("api")]
     public class CatalogController2 : Controller
     {
-    private readonly IMediator _mediator;
+        private readonly IMediator _mediator;
         private readonly ILogger<CatalogController2> _logger;
-        public CatalogController2(ILogger<CatalogController2> logger, IMediator mediator)         {
+        public CatalogController2(ILogger<CatalogController2> logger, IMediator mediator)
+        {
             _logger = logger;
-_mediator = mediator;         }
-[HttpGet]
-public async Task<IActionResult> Index()
-{
-    var result = await _mediator.Send(new Catalog2GetListQuery());
-    return result.IsSuccess ? Ok(result.Value) : NotFound();
-}    }
+            _mediator = mediator;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var result = await _mediator.Send(new Catalog2GetListQuery());
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
+        }
+    }
 }

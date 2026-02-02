@@ -30,49 +30,49 @@ public sealed class PicGetListHandler : IRequestHandler<PicGetListQuery, Result>
         // Business logic from PicController.Index
         if (request.CatalogItemId <= 0)
         {
-        return Result.Success(StatusCode(HttpStatusCode.BadRequest));
+            return Result.Success(StatusCode(HttpStatusCode.BadRequest));
         }
         var item = _context.CatalogItems.Include(c => c.CatalogBrand).Include(c => c.CatalogType).FirstOrDefaultAsync(ci => ci.Id == id);
         if (item != null)
         {
-        var webRoot = Server.MapPath("~/Pics");
-        var path = Path.Combine(webRoot, item.PictureFileName);
-        string imageFileExtension = Path.GetExtension(item.PictureFileName);
-        string mimetype = (string mimetype;
-        switch (imageFileExtension)
-        {
-        case ".png":
-        mimetype = "image/png";
-        break;
-        case ".gif":
-        mimetype = "image/gif";
-        break;
-        case ".jpg":
-        case ".jpeg":
-        mimetype = "image/jpeg";
-        break;
-        case ".bmp":
-        mimetype = "image/bmp";
-        break;
-        case ".tiff":
-        mimetype = "image/tiff";
-        break;
-        case ".wmf":
-        mimetype = "image/wmf";
-        break;
-        case ".jp2":
-        mimetype = "image/jp2";
-        break;
-        case ".svg":
-        mimetype = "image/svg+xml";
-        break;
-        default:
-        mimetype = "application/octet-stream";
-        break;
-        }
-        return mimetype;);
-        var buffer = System.IO.File.ReadAllBytes(path);
-        return Result.Success(File(buffer, mimetype));
+            var webRoot = Server.MapPath("~/Pics");
+            var path = Path.Combine(webRoot, item.PictureFileName);
+            string imageFileExtension = Path.GetExtension(item.PictureFileName);
+            string mimetype = (string mimetype;
+            switch (imageFileExtension)
+            {
+                case ".png":
+                    mimetype = "image/png";
+                    break;
+                case ".gif":
+                    mimetype = "image/gif";
+                    break;
+                case ".jpg":
+                case ".jpeg":
+                    mimetype = "image/jpeg";
+                    break;
+                case ".bmp":
+                    mimetype = "image/bmp";
+                    break;
+                case ".tiff":
+                    mimetype = "image/tiff";
+                    break;
+                case ".wmf":
+                    mimetype = "image/wmf";
+                    break;
+                case ".jp2":
+                    mimetype = "image/jp2";
+                    break;
+                case ".svg":
+                    mimetype = "image/svg+xml";
+                    break;
+                default:
+                    mimetype = "application/octet-stream";
+                    break;
+            }
+            return mimetype;);
+            var buffer = System.IO.File.ReadAllBytes(path);
+            return Result.Success(File(buffer, mimetype));
         }
         return Result.Failure("Not found");
     }

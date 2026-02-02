@@ -30,16 +30,16 @@ public sealed class CatalogGetByIdHandler : IRequestHandler<CatalogGetByIdQuery,
         // Business logic from CatalogController.Details
         if (request.Id == null)
         {
-        return Result.Success(StatusCode(HttpStatusCode.BadRequest));
+            return Result.Success(StatusCode(HttpStatusCode.BadRequest));
         }
         CatalogItem catalogItem = _context. /* TODO: Verify this service call transformation */FindCatalogItem(request.Id.Value);
         if (catalogItem == null)
         {
-        return Result.Failure("Not found");
+            return Result.Failure("Not found");
         }
         // TODO: Private method AddUriPlaceHolder() is also used by: Edit, Delete
         // Consider extracting to a shared helper class or domain service
-        catalogItem.PictureUri = this.Url.RouteUrl(PicController.GetPicRouteName, new { catalogItemId = catalogItem.Id }, this.Request.Url.Scheme);;
+        catalogItem.PictureUri = this.Url.RouteUrl(PicController.GetPicRouteName, new { catalogItemId = catalogItem.Id }, this.Request.Url.Scheme); ;
         return Result.Success(catalogItem);
     }
 }

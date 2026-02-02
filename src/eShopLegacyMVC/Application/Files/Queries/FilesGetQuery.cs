@@ -30,13 +30,13 @@ public sealed class FilesGetHandler : IRequestHandler<FilesGetQuery, Result<Http
         var brands = await _context.CatalogBrands
         .Select(b => new BrandDTO
         {
-        Id = b.Id,
-        Brand = b.Brand
+            Id = b.Id,
+            Brand = b.Brand
         }).ToListAsync(cancellationToken);
         var serializer = new Serializing();
         var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
-        Content = new StreamContent(serializer.SerializeBinary(brands))
+            Content = new StreamContent(serializer.SerializeBinary(brands))
         };
         return Result.Success(response);
     }
