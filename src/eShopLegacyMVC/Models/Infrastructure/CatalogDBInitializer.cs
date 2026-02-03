@@ -1,19 +1,35 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace eShopLegacyMVC.Models.Infrastructure
 {
-    public class CatalogDBInitializer : CreateDatabaseIfNotExists<CatalogDBContext>
-    {
+    // TODO: EF Core migration guidance for CatalogDBInitializer
+// This class inherited from CreateDatabaseIfNotExists<CatalogDBContext> which doesn't exist in EF Core.
+//
+// Options for migrating the Seed() method:
+// 1. Use HasData() in OnModelCreating for static seed data:
+//    modelBuilder.Entity<Genre>().HasData(new Genre { GenreId = 1, Name = "Rock" });
+//
+// 2. Create a separate seed service called from Program.cs:
+//    public class DataSeeder { public void Seed(CatalogDBContext context) { ... } }
+//
+// 3. Use EF Core migrations with data seeding in migrations.
+//
+// For database initialization, use in Program.cs:
+//    var scope = app.Services.CreateScope();
+//    var db = scope.ServiceProvider.GetRequiredService<CatalogDBContext>();
+//    db.Database.Migrate(); // or db.Database.EnsureCreated()
+
+public class CatalogDBInitializer     {
         private const string DBCatalogSequenceName = "catalog_type_hilo";
         private const string DBBrandSequenceName = "catalog_brand_hilo";
         private const string CatalogItemHiLoSequenceScript = @"Models\Infrastructure\dbo.catalog_hilo.Sequence.sql";
@@ -28,8 +44,7 @@ namespace eShopLegacyMVC.Models.Infrastructure
             this.indexGenerator = indexGenerator;
             useCustomizationData = bool.Parse(ConfigurationManager.AppSettings["UseCustomizationData"]);
         }
-
-        protected override void Seed(CatalogDBContext context)
+public void Seed(CatalogDBContext context)
         {
             ExecuteScript(context, CatalogItemHiLoSequenceScript);
             ExecuteScript(context, CatalogBrandHiLoSequenceScript);
