@@ -1,58 +1,40 @@
-﻿using eShopLegacyMVC.Services;
-using log4net;
 using System.IO;
 using System.Net;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using eShopLegacyMVC.Services;
+using log4net;
+using Microsoft.Extensions.Logging;
+using eShopLegacyMVC.Application.Common.Interfaces;
+using eShopLegacyMVC.Application.Pic.Queries;
+using System.Threading.Tasks;
 
 namespace eShopLegacyMVC.Controllers
 {
+    [Route("[controller]")]
     public class PicController : Controller
     {
+        private readonly IMediator _mediator;
+        private readonly ILogger<PicController> _logger;
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public const string GetPicRouteName = "GetPicRouteTemplate";
-
         private ICatalogService service;
-
-        public PicController(ICatalogService service)
+        public PicController(ICatalogService service, ILogger<PicController> logger, IMediator mediator)
         {
             this.service = service;
+            _logger = logger;
+            _mediator = mediator;
         }
-
         // GET: Pic/5.png
         [HttpGet]
         [Route("items/{catalogItemId:int}/pic", Name = GetPicRouteName)]
-        public ActionResult Index(int catalogItemId)
+        public async Task<IActionResult> Index(int catalogItemId)
         {
-            _log.Info($"Now loading... /items/Index?{catalogItemId}/pic");
-
-            if (catalogItemId <= 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var item = service.FindCatalogItem(catalogItemId);
-
-            if (item != null)
-            {
-                var webRoot = Server.MapPath("~/Pics");
-                var path = Path.Combine(webRoot, item.PictureFileName);
-
-                string imageFileExtension = Path.GetExtension(item.PictureFileName);
-                string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
-
-                var buffer = System.IO.File.ReadAllBytes(path);
-
-                return File(buffer, mimetype);
-            }
-
-            return HttpNotFound();
+            var result = await _mediator.Send(new PicGetListQuery { CatalogItemId = catalogItemId });
+            return result.IsSuccess ? Ok() : BadRequest();
         }
-
         private string GetImageMimeTypeFromImageFileExtension(string extension)
         {
             string mimetype;
-
             switch (extension)
             {
                 case ".png":

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<eShopLegacyMVC.Models.CatalogItem>
+@model IEnumerable<eShopLegacyMVC.Models.CatalogItem>
 
 <table class="table">
     <thead>
@@ -43,31 +43,31 @@
                     <img class="esh-thumbnail" src="@item.PictureUri" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <span>@Model.Name</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    <span>@Model.Description</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CatalogBrand.Brand)
+                    <span>@Model.CatalogBrand.Brand</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CatalogType.Type)
+                    <span>@Model.CatalogType.Type</span>
                 </td>
                 <td class="esh-table-price">
-                    @Html.DisplayFor(modelItem => item.Price)
+                    <span>@Model.Price</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PictureFileName)
+                    <span>@Model.PictureFileName</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AvailableStock)
+                    <span>@Model.AvailableStock</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RestockThreshold)
+                    <span>@Model.RestockThreshold</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MaxStockThreshold)
+                    <span>@Model.MaxStockThreshold</span>
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "esh-table-link" }) |

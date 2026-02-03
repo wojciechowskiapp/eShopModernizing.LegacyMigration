@@ -1,4 +1,4 @@
-﻿@model eShopLegacyMVC.Models.CatalogItem
+@model eShopLegacyMVC.Models.CatalogItem
 
 @{
     ViewBag.Title = "Delete";
@@ -16,7 +16,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Name)
+                <span>@Model.Name</span>
             </dd>
 
             <dt>
@@ -24,7 +24,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Description)
+                <span>@Model.Description</span>
             </dd>
 
             <dt>
@@ -32,7 +32,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.CatalogBrand.Brand)
+                <span>@Model.CatalogBrand.Brand</span>
             </dd>
 
             <dt>
@@ -40,14 +40,14 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.CatalogType.Type)
+                <span>@Model.CatalogType.Type</span>
             </dd>
             <dt>
                 @Html.DisplayNameFor(model => model.Price)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Price)
+                <span>@Model.Price</span>
             </dd>
 
             <dt>
@@ -55,7 +55,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.PictureFileName)
+                <span>@Model.PictureFileName</span>
             </dd>
 
             <dt>
@@ -63,7 +63,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.AvailableStock)
+                <span>@Model.AvailableStock</span>
             </dd>
 
             <dt>
@@ -71,7 +71,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.RestockThreshold)
+                <span>@Model.RestockThreshold</span>
             </dd>
 
             <dt>
@@ -79,19 +79,18 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.MaxStockThreshold)
+                <span>@Model.MaxStockThreshold</span>
             </dd>
 
             <dt>
             </dt>
 
             <dd class="text-right esh-button-actions">
-                @using (Html.BeginForm())
-                {
+                <form method="post">
                     @Html.AntiForgeryToken()
                     @Html.ActionLink("[ Cancel ]", "Index", null, new { @class = "btn esh-button esh-button-secondary" })
                     <button type="submit" class="btn esh-button esh-button-primary">[ Delete ]</button>
-                }
+                </form>
             </dd>
 
         </dl>
